@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- New feature blur.Bilateral (also `blur.BilateralFilter` with options and the `bild blur bilateral` CLI command): an edge-preserving bilateral filter whose weights combine spatial distance and RGBA color difference, with strict parameter validation and alpha-aware output
+
 ## 0.17.1
 - Fix transparent pixels when resizing with the Box filter by @youdie006 in https://github.com/anthonynsimon/bild/pull/115
 - Bump golang.org/x/image from 0.44.0 to 0.45.0 to address CVE-2026-46603 in the VP8L decoder, reported in https://github.com/anthonynsimon/bild/pull/116

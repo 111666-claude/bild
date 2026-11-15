@@ -196,6 +196,13 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
 
 ![example](assets/img/gaussianblur.jpg)  
 
+### Bilateral Filter
+    // Smooths flat areas (such as background noise) while preserving sharp
+    // edges. Radius, spatial sigma and color sigma must all be larger than zero.
+    result, err := blur.Bilateral(img, 3.0, 3.0, 25.0)
+
+The CLI exposes the same filter via `bild blur bilateral`.
+
 
 ## Channel
     import "github.com/anthonynsimon/bild/channel"
