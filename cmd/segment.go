@@ -29,6 +29,30 @@ func threshold() *cobra.Command {
 	return cmd
 }
 
+func sdf() *cobra.Command {
+	var level uint8
+	var spread float64
+
+	var cmd = &cobra.Command{
+		Use:     "sdf",
+		Short:   "generate a signed distance field from the alpha channel",
+		Args:    cobra.ExactArgs(2),
+		Example: "sdf --level 128 --spread 8 input.png output.png",
+		Run: func(cmd *cobra.Command, args []string) {
+			fin := args[0]
+			fout := args[1]
+
+			apply(fin, fout, func(img image.Image) (image.Image, error) {
+				return segment.SDF(img, level, spread), nil
+			})
+		}}
+
+	cmd.Flags().Uint8VarP(&level, "level", "l", 128, "the alpha level at which a pixel is considered inside the shape")
+	cmd.Flags().Float64VarP(&spread, "spread", "s", 8, "the distance in pixels over which the field ramps to its extremes")
+
+	return cmd
+}
+
 func createSegment() *cobra.Command {
 	var blurCmd = &cobra.Command{
 		Use:   "segment",
@@ -36,6 +60,7 @@ func createSegment() *cobra.Command {
 	}
 
 	blurCmd.AddCommand(threshold())
+	blurCmd.AddCommand(sdf())
 
 	return blurCmd
 }

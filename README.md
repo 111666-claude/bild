@@ -319,6 +319,12 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
 
 ![example](assets/img/threshold.jpg)
 
+### SDF
+    // Generates a single-channel signed distance field from the alpha channel.
+    // The contour is encoded as 128, inside distances as values above 128 and
+    // outside distances as values below 128, ramping over spread pixels.
+    result := segment.SDF(img, 128, 8)
+
 
 ## Transform
     import "github.com/anthonynsimon/bild/transform"
