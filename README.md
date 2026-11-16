@@ -47,6 +47,7 @@ Available Commands:
   imgio       i/o operations on images
   noise       noise generators
   segment     segment an image using the specified method
+  ssim        local structural similarity comparison of images
   transform   apply geometric transformations to images
 
 Flags:
@@ -79,6 +80,16 @@ bild transform crop --rect 0x0+512x256 input.png output.png
 To convert an image to another format (the encoder is chosen from the output extension):
 ```
 bild imgio encode input.png output.webp
+```
+
+To score a candidate texture against its reference with local SSIM, optionally writing a quality heatmap:
+```
+bild ssim compare --heatmap heat.png reference.png candidate.png
+```
+
+To write only the quality heatmap, optionally colorized for review:
+```
+bild ssim heatmap --colorize reference.png candidate.png heat.png
 ```
 
 
@@ -318,6 +329,31 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
     result := segment.Threshold(img, 128)
 
 ![example](assets/img/threshold.jpg)
+
+
+## SSIM
+    import "github.com/anthonynsimon/bild/ssim"
+
+### Local SSIM and quality heatmap
+    // Score a compressed/candidate texture against the original.
+    // Score is 1.0 for identical images; the heatmap marks local damage.
+    result, err := ssim.Compare(reference, candidate, nil)
+    score := result.Score
+    heatmap := result.Heatmap
+
+    // Fine-tune the window and stabilizers (use nil for defaults).
+    result, err = ssim.Compare(reference, candidate, &ssim.Options{
+        WindowSize:   7,
+        K1:           0.01,
+        K2:           0.03,
+        DynamicRange: 255,
+    })
+
+    // Or get just the mean score with the default options.
+    score, err = ssim.Score(reference, candidate)
+
+    // A sequential color ramp makes damaged regions easy to spot.
+    colored := ssim.ColorizeHeatmap(result.Heatmap)
 
 
 ## Transform

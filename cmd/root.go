@@ -20,6 +20,7 @@ func init() {
 	rootCmd.AddCommand(createImgio())
 	rootCmd.AddCommand(createNoise())
 	rootCmd.AddCommand(createSegment())
+	rootCmd.AddCommand(createSSIM())
 	rootCmd.AddCommand(createHistogram())
 	rootCmd.AddCommand(createChannel())
 	rootCmd.AddCommand(createEffect())

@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Add local structural similarity comparison (`ssim.Compare`, `ssim.Score`) with a per-pixel quality heatmap aligned to the reference bounds, plus `bild ssim compare` and `bild ssim heatmap` CLI commands. The score separates global luminance shifts from lost detail, ignores fully transparent pixels, supports non-zero origins, and rejects mismatched sizes, empty images and invalid parameters instead of dividing by zero.
+
 ## 0.17.1
 - Fix transparent pixels when resizing with the Box filter by @youdie006 in https://github.com/anthonynsimon/bild/pull/115
 - Bump golang.org/x/image from 0.44.0 to 0.45.0 to address CVE-2026-46603 in the VP8L decoder, reported in https://github.com/anthonynsimon/bild/pull/116
