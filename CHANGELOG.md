@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Add `guidedfilter.Filter`, an edge-preserving guided filter (He et al.) smoothing a source image along the edges of a separate guide image, with CLI support (`bild guidedfilter`)
+
 ## 0.17.1
 - Fix transparent pixels when resizing with the Box filter by @youdie006 in https://github.com/anthonynsimon/bild/pull/115
 - Bump golang.org/x/image from 0.44.0 to 0.45.0 to address CVE-2026-46603 in the VP8L decoder, reported in https://github.com/anthonynsimon/bild/pull/116

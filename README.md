@@ -42,6 +42,7 @@ Available Commands:
   blur        blur an image using the specified method
   channel     channel operations on images
   effect      apply effects on images
+  guidedfilter apply an edge-preserving guided filter using a guide image
   help        Help about any command
   histogram   histogram operations on images
   imgio       i/o operations on images
@@ -265,6 +266,17 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
     result := effect.UnsharpMask(img, 0.6, 1.2)
 
 ![example](assets/img/unsharpmask.jpg)  
+
+
+## Guided Filter
+    import "github.com/anthonynsimon/bild/guidedfilter"
+
+### Guided Filter
+    result := guidedfilter.Filter(img, guide, 4, 0.01)
+
+Edge-preserving smoothing of `img` that follows the structure of the `guide`
+image. `radius` sets the window half-size and `epsilon` the regularization
+term (larger values smooth more aggressively across weak guide edges).
 
 
 ## Histogram
