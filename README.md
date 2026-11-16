@@ -319,6 +319,11 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
 
 ![example](assets/img/threshold.jpg)
 
+### Adaptive Threshold (Sauvola)
+    // Per-pixel threshold from the local mean and variance, for line art
+    // under uneven lighting. window must be a positive odd integer.
+    result, err := segment.SauvolaThreshold(img, segment.DefaultSauvolaWindow, segment.DefaultSauvolaK, segment.DefaultSauvolaR)
+
 
 ## Transform
     import "github.com/anthonynsimon/bild/transform"

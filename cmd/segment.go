@@ -29,6 +29,31 @@ func threshold() *cobra.Command {
 	return cmd
 }
 
+func sauvola() *cobra.Command {
+	var window int
+	var k, r float64
+
+	var cmd = &cobra.Command{
+		Use:     "sauvola",
+		Short:   "segment an image with adaptive Sauvola thresholding",
+		Args:    cobra.ExactArgs(2),
+		Example: "sauvola --window 25 --k 0.2 --r 128 input.jpg output.jpg",
+		Run: func(cmd *cobra.Command, args []string) {
+			fin := args[0]
+			fout := args[1]
+
+			apply(fin, fout, func(img image.Image) (image.Image, error) {
+				return segment.SauvolaThreshold(img, window, k, r)
+			})
+		}}
+
+	cmd.Flags().IntVarP(&window, "window", "w", segment.DefaultSauvolaWindow, "odd side length of the local neighborhood window")
+	cmd.Flags().Float64VarP(&k, "k", "k", segment.DefaultSauvolaK, "Sauvola sensitivity factor")
+	cmd.Flags().Float64VarP(&r, "r", "r", segment.DefaultSauvolaR, "dynamic range of the local standard deviation")
+
+	return cmd
+}
+
 func createSegment() *cobra.Command {
 	var blurCmd = &cobra.Command{
 		Use:   "segment",
@@ -36,6 +61,7 @@ func createSegment() *cobra.Command {
 	}
 
 	blurCmd.AddCommand(threshold())
+	blurCmd.AddCommand(sauvola())
 
 	return blurCmd
 }
