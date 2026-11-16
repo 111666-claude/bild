@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Add luminance histogram matching (`histogram.MatchLuminance`, `histogram.LuminanceLUT`, `histogram.NewLuminanceHistogram`) and a `bild histogram match` CLI command, so an image's exposure can be aligned to a reference image while keeping its hue, alpha and dimensions
+
 ## 0.17.1
 - Fix transparent pixels when resizing with the Box filter by @youdie006 in https://github.com/anthonynsimon/bild/pull/115
 - Bump golang.org/x/image from 0.44.0 to 0.45.0 to address CVE-2026-46603 in the VP8L decoder, reported in https://github.com/anthonynsimon/bild/pull/116

@@ -48,6 +48,26 @@ func newHisto() *cobra.Command {
 	return cmd
 }
 
+func matchLuminance() *cobra.Command {
+	var cmd = &cobra.Command{
+		Use:     "match",
+		Short:   "match the luminance of an image to a reference image",
+		Args:    cobra.ExactArgs(3),
+		Example: "match input.jpg reference.jpg output.jpg",
+		Run: func(cmd *cobra.Command, args []string) {
+			fin := args[0]
+			fref := args[1]
+			fout := args[2]
+
+			// apply2 takes care of resolving the destination encoder
+			apply2(fin, fref, fout, func(img, ref image.Image) (image.Image, error) {
+				return histogram.MatchLuminance(img, ref), nil
+			})
+		}}
+
+	return cmd
+}
+
 func createHistogram() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:   "histogram",
@@ -55,6 +75,7 @@ func createHistogram() *cobra.Command {
 	}
 
 	cmd.AddCommand(newHisto())
+	cmd.AddCommand(matchLuminance())
 
 	return cmd
 }

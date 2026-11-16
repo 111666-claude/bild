@@ -81,6 +81,11 @@ To convert an image to another format (the encoder is chosen from the output ext
 bild imgio encode input.png output.webp
 ```
 
+To match the exposure of one image to a reference image (the first file is adjusted):
+```
+bild histogram match input.png reference.png output.png
+```
+
 
 ## Install package
 
@@ -275,6 +280,11 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
     result := hist.Image()
 
 ![example](assets/img/histogram.png)  
+
+### Luminance Matching
+    // Match the source image's luminance distribution to the reference image,
+    // keeping the source size, hue and alpha.
+    result := histogram.MatchLuminance(img, reference)
 
 
 ## Noise
