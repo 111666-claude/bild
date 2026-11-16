@@ -41,6 +41,7 @@ Available Commands:
   blend       blend two images together
   blur        blur an image using the specified method
   channel     channel operations on images
+  deltae      CIEDE2000 color difference analysis on images
   effect      apply effects on images
   help        Help about any command
   histogram   histogram operations on images
@@ -207,6 +208,29 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
 
 ### Extract Multiple Channels
     result := channel.ExtractMultiple(img, channel.Red, channel.Alpha)
+
+## DeltaE
+    import "github.com/anthonynsimon/bild/deltae"
+
+### CIEDE2000 Comparison
+Compares two same-sized images and returns a per-pixel DeltaE heatmap
+(same bounds and alpha as the first input) along with the alpha-weighted
+mean and max DeltaE. Colors are converted from sRGB to CIE L*a*b* (D65).
+Transparent pixels are excluded from the summaries.
+
+    result, err := deltae.Compare(imgA, imgB)
+    // result.Heatmap: grayscale per-pixel DeltaE visualization
+    // result.Mean:    alpha-weighted average DeltaE
+    // result.Max:     maximum DeltaE among contributing pixels
+    // result.At(x,y): raw per-pixel DeltaE value
+
+The heatmap normalization scale can be customized (defaults to 100):
+
+    result, err := deltae.CompareWithScale(imgA, imgB, 50)
+
+Single colors can be compared directly:
+
+    d := deltae.DeltaE(colorA, colorB)
 
 ## Effect
     import "github.com/anthonynsimon/bild/effect"

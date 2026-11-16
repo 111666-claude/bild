@@ -22,6 +22,7 @@ func init() {
 	rootCmd.AddCommand(createSegment())
 	rootCmd.AddCommand(createHistogram())
 	rootCmd.AddCommand(createChannel())
+	rootCmd.AddCommand(createDeltaE())
 	rootCmd.AddCommand(createEffect())
 	rootCmd.AddCommand(createTransform())
 }
