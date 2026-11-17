@@ -130,6 +130,35 @@ func resize() *cobra.Command {
 	return cmd
 }
 
+func resizeNormalMap() *cobra.Command {
+	var width, height int
+	var filter string
+
+	var cmd = &cobra.Command{
+		Use:   "resize-normal-map",
+		Short: "resize a tangent-space normal map, interpolating and renormalizing its vectors",
+		// The 'h' shorthand is reserved for help by cobra, so flags are used long-form.
+		Args:    cobra.ExactArgs(2),
+		Example: "resize-normal-map --width 1024 --height 1024 --filter lanczos normal.png normal_small.png",
+		Run: func(cmd *cobra.Command, args []string) {
+			fin := args[0]
+			fout := args[1]
+
+			f, err := parseResampleFilter(filter)
+			exitIfNotNil(err)
+
+			apply(fin, fout, func(img image.Image) (image.Image, error) {
+				return transform.ResizeNormalMap(img, width, height, f), nil
+			})
+		}}
+
+	cmd.Flags().IntVar(&width, "width", 0, "target width in pixels")
+	cmd.Flags().IntVar(&height, "height", 0, "target height in pixels")
+	cmd.Flags().StringVarP(&filter, "filter", "f", "linear", "resampling filter (nearestneighbor, box, linear, gaussian, mitchellnetravali, catmullrom, lanczos)")
+
+	return cmd
+}
+
 func crop() *cobra.Command {
 	var rect string
 
@@ -224,6 +253,7 @@ func createTransform() *cobra.Command {
 	transformCmd.AddCommand(fliph())
 	transformCmd.AddCommand(flipv())
 	transformCmd.AddCommand(resize())
+	transformCmd.AddCommand(resizeNormalMap())
 	transformCmd.AddCommand(crop())
 	transformCmd.AddCommand(translate())
 	transformCmd.AddCommand(shearh())

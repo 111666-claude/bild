@@ -66,6 +66,11 @@ To resize an image to 800x600 using the lanczos filter:
 bild transform resize --width 800 --height 600 --filter lanczos input.png output.png
 ```
 
+To resize a tangent-space normal map, interpolating its encoded vectors and renormalizing them:
+```
+bild transform resize-normal-map --width 512 --height 512 --filter lanczos normal.png normal_small.png
+```
+
 To rotate an image 90 degrees clockwise, expanding bounds to fit:
 ```
 bild transform rotate --angle 90 --resize-bounds input.png output.png
@@ -342,6 +347,12 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
 
 ### Resize Resampling Filters
     result := transform.Resize(img, 280, 280, transform.Linear)
+
+### Resize Normal Map
+    // Treats the RGB channels as a tangent-space normal encoded in the 0..255 range,
+    // interpolates the vectors, renormalizes them to unit length and preserves alpha.
+    // The same resampling filters as Resize are available.
+    result := transform.ResizeNormalMap(normalMap, 280, 280, transform.Linear)
 
 | Nearest Neighbor | Linear | Gaussian |
 |:----------: | :---------: | :------: |
