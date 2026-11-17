@@ -5,8 +5,46 @@ import (
 	"image"
 
 	"github.com/anthonynsimon/bild/blend"
+	"github.com/anthonynsimon/bild/imgio"
 	"github.com/spf13/cobra"
 )
+
+func buildMultiscaleCommand() *cobra.Command {
+	var levels int
+
+	var cmd = &cobra.Command{
+		Use:     "multiscale",
+		Short:   "blend two images using multi-scale (Laplacian pyramid) fusion",
+		Args:    cobra.ExactArgs(4),
+		Example: "multiscale --levels 4 bg.jpg fg.jpg mask.png output.jpg",
+		Run: func(cmd *cobra.Command, args []string) {
+			fin1 := args[0]
+			fin2 := args[1]
+			fmask := args[2]
+			fout := args[3]
+
+			bg, err := imgio.Open(fin1)
+			exitIfNotNil(err)
+
+			fg, err := imgio.Open(fin2)
+			exitIfNotNil(err)
+
+			mask, err := imgio.Open(fmask)
+			exitIfNotNil(err)
+
+			result, err := blend.Multiscale(bg, fg, mask, levels)
+			exitIfNotNil(err)
+
+			encoder := resolveEncoder(fout, imgio.PNGEncoder())
+			err = imgio.Save(fout, result, encoder)
+			exitIfNotNil(err)
+		},
+	}
+
+	cmd.Flags().IntVarP(&levels, "levels", "l", 4, "number of pyramid levels used for the fusion")
+
+	return cmd
+}
 
 func buildBlendModeCommand(name string) *cobra.Command {
 	var strength float64
@@ -85,6 +123,7 @@ func createBlend() *cobra.Command {
 	blendCmd.AddCommand(buildBlendModeCommand("linearLight"))
 	blendCmd.AddCommand(buildBlendModeCommand("multiply"))
 	blendCmd.AddCommand(buildBlendModeCommand("normal"))
+	blendCmd.AddCommand(buildMultiscaleCommand())
 	blendCmd.AddCommand(buildBlendModeCommand("opacity"))
 	blendCmd.AddCommand(buildBlendModeCommand("overlay"))
 	blendCmd.AddCommand(buildBlendModeCommand("screen"))

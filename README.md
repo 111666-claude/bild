@@ -180,6 +180,15 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
 | **Soft Light** | **Subtract** | |
 | ![](assets/img/softlight.jpg) | ![](assets/img/subtract.jpg) | |
 
+### Multiscale
+Multi-scale (Laplacian pyramid) fusion of two images using a grayscale mask. Black mask regions take the background, white regions take the foreground, and each frequency band is blended at its own scale so wide transitions stay smooth without ghosting high-frequency detail.
+
+    result, err := blend.Multiscale(bg, fg, mask, 4)
+
+Or via the CLI:
+
+    bild blend multiscale --levels 4 bg.jpg fg.jpg mask.png output.png
+
 
 ## Blur
     import "github.com/anthonynsimon/bild/blur"
