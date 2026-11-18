@@ -191,6 +191,33 @@ func edgedetection() *cobra.Command {
 	return cmd
 }
 
+func canny() *cobra.Command {
+	var sigma float64
+	var low float64
+	var high float64
+
+	var cmd = &cobra.Command{
+		Use:     "canny",
+		Short:   "applies the canny edge detection effect",
+		Args:    cobra.ExactArgs(2),
+		Example: "canny --sigma 1.0 --low 50 --high 100 input.jpg output.png",
+		Run: func(cmd *cobra.Command, args []string) {
+			fin := args[0]
+			fout := args[1]
+
+			// Apply takes care of resolving the destination encoder
+			apply(fin, fout, func(img image.Image) (image.Image, error) {
+				return effect.Canny(img, sigma, low, high), nil
+			})
+		}}
+
+	cmd.Flags().Float64VarP(&sigma, "sigma", "s", 1.0, "the smoothing gaussian's sigma (0 disables smoothing)")
+	cmd.Flags().Float64VarP(&low, "low", "l", 50, "the low hysteresis threshold (0-255)")
+	cmd.Flags().Float64VarP(&high, "high", "u", 100, "the high hysteresis threshold (0-255)")
+
+	return cmd
+}
+
 func emboss() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:     "emboss",
@@ -250,6 +277,7 @@ func createEffect() *cobra.Command {
 	cmd.AddCommand(erode())
 	cmd.AddCommand(dilate())
 	cmd.AddCommand(edgedetection())
+	cmd.AddCommand(canny())
 	cmd.AddCommand(emboss())
 	cmd.AddCommand(unsharpmask())
 

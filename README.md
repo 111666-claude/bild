@@ -211,6 +211,11 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
 ## Effect
     import "github.com/anthonynsimon/bild/effect"
 
+### Canny Edge Detection
+    result := effect.Canny(img, 1.0, 50, 100)
+
+![example](assets/img/canny.jpg)
+
 ### Dilate
     result := effect.Dilate(img, 3)
 

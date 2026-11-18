@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Add Canny edge detection via `effect.Canny` with configurable smoothing sigma and hysteresis thresholds, plus the `bild effect canny` CLI command
+
 ## 0.17.1
 - Fix transparent pixels when resizing with the Box filter by @youdie006 in https://github.com/anthonynsimon/bild/pull/115
 - Bump golang.org/x/image from 0.44.0 to 0.45.0 to address CVE-2026-46603 in the VP8L decoder, reported in https://github.com/anthonynsimon/bild/pull/116
