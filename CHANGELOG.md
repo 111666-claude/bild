@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Add ordered halftone (ordered dithering) in the new `halftone` package with `halftone.Ordered` and `halftone.BayerMatrix`. Configurable matrix size, dithering strength, matrix origin and a finite output palette (defaults to black and white). The matrix tiles over absolute image coordinates, so cropped blocks match full-image processing, and fully transparent pixels are preserved. Exposed as `bild halftone ordered` on the CLI.
+
 ## 0.17.1
 - Fix transparent pixels when resizing with the Box filter by @youdie006 in https://github.com/anthonynsimon/bild/pull/115
 - Bump golang.org/x/image from 0.44.0 to 0.45.0 to address CVE-2026-46603 in the VP8L decoder, reported in https://github.com/anthonynsimon/bild/pull/116

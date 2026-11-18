@@ -42,6 +42,7 @@ Available Commands:
   blur        blur an image using the specified method
   channel     channel operations on images
   effect      apply effects on images
+  halftone    apply halftone dithering on images
   help        Help about any command
   histogram   histogram operations on images
   imgio       i/o operations on images
@@ -79,6 +80,17 @@ bild transform crop --rect 0x0+512x256 input.png output.png
 To convert an image to another format (the encoder is chosen from the output extension):
 ```
 bild imgio encode input.png output.webp
+```
+
+To apply ordered halftone for a black-and-white e-ink display, using an 8x8
+Bayer matrix at full strength:
+```
+bild halftone ordered --matrix-size 8 --strength 1 input.png output.png
+```
+
+To restrict the output to a custom finite palette instead of black and white:
+```
+bild halftone ordered --palette "#000000,#888888,#ffffff" input.png output.png
 ```
 
 
@@ -318,6 +330,28 @@ The CLI selects the encoder from the output file extension (`.png`, `.jpg`/`.jpe
     result := segment.Threshold(img, 128)
 
 ![example](assets/img/threshold.jpg)
+
+
+## Halftone
+    import "github.com/anthonynsimon/bild/halftone"
+
+### Ordered Halftone
+Ordered halftone (ordered dithering) reduces an image to black and white — or
+any finite palette — while keeping apparent shading through a Bayer threshold
+matrix that tiles contiguously over the whole image. Matrix size, dithering
+strength, matrix origin and output palette are all configurable. Fully
+transparent pixels are preserved.
+
+    result, err := halftone.Ordered(img, &halftone.Options{
+        MatrixSize: 8,                 // square Bayer matrix side, 0 defaults to 8
+        Strength:   1.0,               // 1.0 = full dither, small value = plain quantization
+        Origin:     image.Pt(0, 0),    // shifts the matrix phase
+        Palette:    nil,               // nil defaults to black and white
+    })
+
+The matrix is indexed by absolute image coordinates, so processing a cropped
+region yields exactly the pixels full-image processing would have produced for
+that region.
 
 
 ## Transform

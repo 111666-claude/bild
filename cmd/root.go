@@ -24,6 +24,7 @@ func init() {
 	rootCmd.AddCommand(createChannel())
 	rootCmd.AddCommand(createEffect())
 	rootCmd.AddCommand(createTransform())
+	rootCmd.AddCommand(createHalftone())
 }
 
 // Execute starts the cli's root command
